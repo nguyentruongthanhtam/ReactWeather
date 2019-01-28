@@ -4,16 +4,21 @@ body
 {
   font-family: 'Montserrat Alternates', sans-serif;
 }
-
+.App::after
+{ 
+  display: none;
+}
 /* Content wrapper */
 #wrapper
 {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background-size: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: center;
+  overflow: hidden;
+  background-color: #292828;
 }
 
 /* Credit section */
@@ -21,11 +26,11 @@ body
 {
   content: 'Credit: ' attr(data-owner) '  @Flickr';
   height: 20px;
-  color: #aaa;
+  color: #eee;
   position: absolute;
   bottom: 2em;
-  right: 2em;
-  transform-origin: bottom right;
+  right: 1em;
+  transform-origin: top right;
   transform: rotate(90deg);
 }
 
@@ -50,7 +55,6 @@ body
   left: 0;
   width: 50%;
   height: 100%;
-  /* border: 1px solid red; */
 }
 
 /* Forecast Section */
@@ -59,9 +63,7 @@ body
   height: 60%;
   width: 60%;
   list-style-type: none;
-  padding-left: 0;
   margin: 0 0 0 1em;
-
 }
 /* Each day Forecast */
 .forecast li
@@ -157,7 +159,6 @@ body
 #modal
 {
   background: radial-gradient(#111, #222);
-  /* background: #111; */
   position: absolute;
   top: 0;
   left: 0;
@@ -169,7 +170,7 @@ body
   justify-content: center;
   flex-direction: row;
 }
-
+/* City input field*/
 #modal input
 {
   background-color: transparent;
@@ -179,7 +180,6 @@ body
   font-size: 2em;
   transition: .5s all ease;
   text-align: center;
-  /* width: 40%; */
 }
 
 #modal input:focus
@@ -188,6 +188,7 @@ body
   border-bottom: 2px solid #fff;
 }
 
+/* Change autofill Chrome color */
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
@@ -198,6 +199,8 @@ input:-webkit-autofill:active  {
 input:-webkit-autofill {
   -webkit-text-fill-color: white !important;
 }
+
+/* Search button */
 #modal img
 {
   height: 3em;
@@ -205,7 +208,7 @@ input:-webkit-autofill {
   line-height: 100px;
   cursor: pointer;
 }
-
+/* Weather animation SVG */
 #modal svg
 {
   position: absolute;
@@ -213,10 +216,119 @@ input:-webkit-autofill {
   height: 300px;
   pointer-events: none;
 }
-
+/* Hide Icons at start */
 #modal svg .cls-1, #modal svg .cls-2, #modal svg .cls-3
 {
   opacity: 0;
 }
-
+/* Rain icon */
 #modal svg .cls-2 {fill:none;stroke:#6ac6f9;stroke-miterlimit:10;stroke-width:5px;}
+
+
+/* Display a warning for landscape mode */
+@media only screen and (min-width: 450px) and (max-width: 768px) and (orientation: landscape){
+  .App::after
+  {
+    content: 'It is a bit hard to make anything look great in landscape. Portrait mode is better for visual.';
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: white;
+    background-color: red;
+    z-index: 99;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    text-align: center;
+  }
+}
+
+/* Mobile portrait mode */
+@media only screen and (max-width: 768px) {
+  /* Scale the root font-size on mobiles */
+  body
+  {
+    font-size: 8pt;
+  }
+  /* Gradient panel */
+  #wrapper::after
+  {
+    top: unset;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top,#292828, rgba(60,60,60,.93) 30%, rgba(76,76,76,.66) 60%, rgba(102,102,102,.39) 80%, rgba(255,255,255,.0) 100%)
+  }
+
+  /* Information Wrapper Style */
+  #information
+  {
+    top: unset;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    /* position: fixed; */
+    padding: 2em 0;
+  }
+
+  /* Forecast Section */
+  .forecast
+  {
+    width: auto;
+    height: 50%;
+    margin: 0;
+    position: relative;
+    padding: 0;
+    padding-left: 5em;
+    margin-bottom: 2em;
+  }
+
+  .forecast li
+  {
+    width: 30%;
+    margin-left: 0;
+    color: white;
+    padding-top: 2px;
+    text-align: left;
+  }
+
+  .forecast #temp
+  {
+    font-weight: 600;
+    font-size: 1.5em;
+  }
+
+  .forecast #humidity, .forecast #lower-temp
+  {
+    visibility: hidden;
+  }
+
+  /* Current weather section */
+  .current-weather
+  {
+    position: relative;
+    width: 100%;
+    height: 50%;
+  }
+
+  /* Unit button */
+  .unit
+  {
+    top: unset;
+    bottom: 20px;
+    left: unset;
+    right: 20px;
+  }
+
+  #modal
+  {
+    overflow: hidden;
+  }
+}

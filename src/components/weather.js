@@ -34,7 +34,11 @@ class Weather extends Component {
                 fetch(`https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=${FLICKR_API_KEY}&photo_id=${id}&format=json&nojsoncallback=1`)
                 .then(res => res.json()).then(response => {
                     if(response.stat === 'ok'){
-                        const url = response.sizes.size[response.sizes.size.length - 2].source; // get large size photos
+
+                        // Get small size image for small screen 
+                        const size = window.innerWidth <= 420 ? response.sizes.size.length - 6 : response.sizes.size.length - 2// small size screen
+
+                        const url = response.sizes.size[size].source; 
                         const photoSource = {src: url, owner: photo.ownername}
                         this.setState({photo: photoSource})
                    } 
@@ -48,7 +52,6 @@ class Weather extends Component {
     // get weather from OpenWEather API base on the city name and unit
     getWeatherData (city,unit){
         var queryUnit = unit ==='°C' ? 'metric' : 'imperial';
-        const appId= "eb5b691ef0672d70980bd6b0b0d6b502"; 
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appId=${WEATHER_API_KEY}&units=${queryUnit}`)
         .then(res => res.json())
         .then(data => {
